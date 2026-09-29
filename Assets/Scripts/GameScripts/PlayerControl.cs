@@ -292,7 +292,7 @@ public class PlayerControl : MonoBehaviour
 
             if (Input.GetKeyDown(fireKey))
             {
-                FireProjectile();
+                channelProjectile();
             }
 
 
@@ -356,11 +356,9 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private void FireProjectile()
+    private void FireProjectile(Vector3 pos)
     {
-        AudioManager.inst.PlaySound(firingSFX, Sounds.inst.fireProjectileVolume);
-        float offsetScaler = 0.8f;
-        var pos = transform.position + (direction * offsetScaler);
+        
         GameObject go = Instantiate(projectilePrefab, pos, Quaternion.identity);
         var rend = go.GetComponentInChildren<SpriteRenderer>();
         if (rotationEnabled) { rend.transform.localRotation = transform.rotation; }
@@ -371,10 +369,25 @@ public class PlayerControl : MonoBehaviour
         pjt.Init();
         FiringAnimationControl(direction);
 
-        ProjectileFired?.Invoke(pos);
+        
 
     }
 
+    private void channelProjectile()
+    {
+        AudioManager.inst.PlaySound(firingSFX, Sounds.inst.fireProjectileVolume);
+        float offsetScaler = 0.8f;
+        var pos = transform.position + (direction * offsetScaler);
+        ProjectileFired?.Invoke(pos);
+        StartCoroutine ("Fire", pos);
+        
+    }
+
+    private IEnumerator Fire(Vector3 pos)
+    {
+        yield return new WaitForSeconds(1);
+        FireProjectile(pos);
+    }
     //We move the player in a coroutine by sending a start and an end pos and just lerping between then
     //for the duration set. The duration is currently 1/ moveSpeed 
     private IEnumerator MovePlayer(Vector3 startPos, Vector3 endPos)
