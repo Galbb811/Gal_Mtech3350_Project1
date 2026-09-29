@@ -22,23 +22,39 @@ public class PlayerControl : MonoBehaviour
             if (_direction == Vector3.down)
             {
                 //Animator code goes here for this state
+                animator.SetBool("Down", true);
+                animator.SetBool("Up", false);
+                animator.SetBool("Side", false);
 
             }
 
             if (_direction == Vector3.up)
             {
                 //Animator code goes here for this state
+                animator.SetBool("Down", false);
+                animator.SetBool("Up", true);
+                animator.SetBool("Side", false);
             }
 
             if (_direction == Vector3.left)
             {
                 //Animator code goes here for this state
+                animator.SetBool("Down", false);
+                animator.SetBool("Up", false);
+                animator.SetBool("Side", true);
+
+                rend.flipX = false;
 
             }
 
             if (_direction == Vector3.right)
             {
                 //Animator code goes here for this state
+                animator.SetBool("Down", false);
+                animator.SetBool("Up", false);
+                animator.SetBool("Side", true);
+
+                rend.flipX = true;
 
             }
         }
@@ -55,6 +71,9 @@ public class PlayerControl : MonoBehaviour
         if (animatorController == null) return;
 
         //Code for resetting animator bools go here
+                animator.SetBool("Down", false);
+                animator.SetBool("Up", false);
+                animator.SetBool("Side", false);
     }
 
     private void ChangeFacingDirection(Vector3 _direction)
@@ -64,21 +83,27 @@ public class PlayerControl : MonoBehaviour
         if (_direction == Vector3.down)
         {
             //Animator code goes here for this state
+            animator.SetTrigger("FaceDown");
         }
 
         if (_direction == Vector3.up)
         {
             //Animator code goes here for this state
+            animator.SetTrigger("FaceUp");
         }
 
         if (_direction == Vector3.left)
         {
             //Animator code goes here for this state
+            animator.SetTrigger("FaceSide");
+            rend.flipX = false;
         }
 
         if (_direction == Vector3.right)
         {
             //Animator code goes here for this state
+            animator.SetTrigger("FaceSide");
+            rend.flipX = true;
         }
     }
 
